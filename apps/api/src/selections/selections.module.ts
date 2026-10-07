@@ -5,6 +5,7 @@ import { SelectionAudit } from '../entities/selection-audit.entity';
 import { DailyMenu } from '../entities/daily-menu.entity';
 import { Subscription } from '../entities/subscription.entity';
 import { SelectionsService } from './selections.service';
+import { SelectionsController } from './selections.controller';
 import { LedgerModule } from '../ledger/ledger.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { LedgerModule } from '../ledger/ledger.module';
     TypeOrmModule.forFeature([MealSelection, SelectionAudit, DailyMenu, Subscription]),
     LedgerModule,
   ],
+  controllers: [SelectionsController],
   providers: [SelectionsService],
   exports: [SelectionsService],
 })

@@ -1,4 +1,7 @@
-import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { SelectionsService } from './selections.service';
 import { ResolveMealSelectionDto, BulkResolveSelectionsDto } from './dto/resolve-selection.dto';
 
@@ -9,6 +12,8 @@ export class SelectionsController {
   /**
    * Get all unresolved pending selections across all dates.
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('pending/all')
   getAllUnresolvedPending() {
     return this.selectionsService.getAllUnresolvedPending();
@@ -17,6 +22,8 @@ export class SelectionsController {
   /**
    * Get pending selections for a specific date (owner's confirmation list).
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('pending/:menuDate')
   getPendingForDate(@Param('menuDate') menuDate: string) {
     return this.selectionsService.getPendingForDate(menuDate);
@@ -25,6 +32,8 @@ export class SelectionsController {
   /**
    * Get detailed pending review summary for a date.
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'chef')
   @Get('review/:menuDate')
   getPendingReview(@Param('menuDate') menuDate: string) {
     return this.selectionsService.getPendingReviewForDate(menuDate);
@@ -33,6 +42,8 @@ export class SelectionsController {
   /**
    * Get kitchen count (dish orders) for a date.
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'chef')
   @Get('kitchen-count/:menuDate')
   getKitchenCount(@Param('menuDate') menuDate: string) {
     return this.selectionsService.getKitchenCount(menuDate);
@@ -41,6 +52,8 @@ export class SelectionsController {
   /**
    * Get customer's selection history.
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'chef')
   @Get('customer/:customerId/history')
   getCustomerHistory(@Param('customerId') customerId: string) {
     return this.selectionsService.getCustomerHistory(customerId);
@@ -49,6 +62,8 @@ export class SelectionsController {
   /**
    * Get a specific selection by customer and date.
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'chef')
   @Get('customer/:customerId/date/:menuDate')
   getByCustomerAndDate(
     @Param('customerId') customerId: string,
@@ -60,6 +75,8 @@ export class SelectionsController {
   /**
    * Resolve a single meal selection (ADMIN).
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Patch(':selectionId/resolve')
   resolve(
     @Param('selectionId') selectionId: string,
@@ -79,6 +96,8 @@ export class SelectionsController {
   /**
    * Resolve multiple selections in bulk (ADMIN).
    */
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Post('resolve/bulk')
   async resolveBulk(@Body() dto: BulkResolveSelectionsDto) {
     const results = [];
