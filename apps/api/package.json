@@ -1,0 +1,53 @@
+{
+  "name": "@saunf/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "db:migrate": "node -e \"require('./dist/database/run-migrations')\"",
+    "db:seed": "node -e \"require('./dist/database/seed')\""
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/typeorm": "^11.0.0",
+    "@nestjs/bull": "^11.0.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/passport": "^11.0.0",
+    "typeorm": "^0.3.20",
+    "pg": "^8.13.0",
+    "bullmq": "^5.0.0",
+    "ioredis": "^5.4.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.0",
+    "bcrypt": "^5.1.0",
+    "class-validator": "^0.14.0",
+    "class-transformer": "^0.5.0",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.0",
+    "@saunf/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/testing": "^11.0.0",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^22.0.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/passport-jwt": "^4.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.0",
+    "typescript": "^5.6.0",
+    "eslint": "^9.0.0",
+    "source-map-support": "^0.5.0"
+  }
+}
