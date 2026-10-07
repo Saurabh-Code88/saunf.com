@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DailyMenu } from '../entities/daily-menu.entity';
+import { MealSelection } from '../entities/meal-selection.entity';
+import { Subscription } from '../entities/subscription.entity';
+import { Customer } from '../entities/customer.entity';
 import { SelectionsModule } from '../selections/selections.module';
-import { LedgerModule } from '../ledger/ledger.module';
-import { BillingModule } from '../billing/billing.module';
+import { AdminService } from './admin.service';
+import { AdminController } from './admin.controller';
 
-/**
- * Admin module — will contain controllers for:
- * - Daily view (kitchen count, customer states)
- * - Pending confirmation list
- * - Manual adjustments
- * - Invoice generation
- * - Menu management
- */
 @Module({
-  imports: [SelectionsModule, LedgerModule, BillingModule],
-  controllers: [],
-  providers: [],
+  imports: [
+    TypeOrmModule.forFeature([DailyMenu, MealSelection, Subscription, Customer]),
+    SelectionsModule,
+  ],
+  controllers: [AdminController],
+  providers: [AdminService],
+  exports: [AdminService],
 })
 export class AdminModule {}

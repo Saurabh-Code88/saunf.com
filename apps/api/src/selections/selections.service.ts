@@ -16,6 +16,7 @@ import {
   SelectionSource,
   ALLOWED_TRANSITIONS,
 } from '@saunf/shared';
+import { ResolveMealSelectionDto } from './dto/resolve-selection.dto';
 
 export interface ResolveSelectionDto {
   selectionId: string;
@@ -33,6 +34,23 @@ export interface KitchenCount {
   absentCount: number;
   pendingCount: number;
   totalCustomers: number;
+}
+
+export interface PendingReview {
+  menuDate: string;
+  totalSelections: number;
+  pendingCount: number;
+  resolvedCount: number;
+  absentCount: number;
+  presentCount: number;
+  pendingSelections: {
+    id: string;
+    customerId: string;
+    customerName: string;
+    state: string;
+    source: string;
+    createdAt: Date;
+  }[];
 }
 
 /**
@@ -339,6 +357,45 @@ export class SelectionsService {
       relations: ['customer'],
       order: { customer: { name: 'ASC' } },
     });
+  }
+
+  /**
+   * Get pending review summary for a specific date.
+   */
+  async getPendingReviewForDate(menuDate: string): Promise<PendingReview> {
+    const selections = await this.selectionRepo.find({
+      where: { menuDate },
+      relations: ['customer'],
+    });
+
+    const pendingSelections = selections
+      .filter((s) => s.state === MealSelectionState.PENDING)
+      .map((s) => ({
+        id: s.id,
+        customerId: s.customerId,
+        customerName: s.customer?.name || 'Unknown',
+        state: s.state,
+        source: s.source,
+        createdAt: s.createdAt,
+      }));
+
+    return {
+      menuDate,
+      totalSelections: selections.length,
+      pendingCount: selections.filter(
+        (s) => s.state === MealSelectionState.PENDING,
+      ).length,
+      resolvedCount: selections.filter(
+        (s) => s.state !== MealSelectionState.PENDING,
+      ).length,
+      absentCount: selections.filter(
+        (s) => s.state === MealSelectionState.ABSENT,
+      ).length,
+      presentCount: selections.filter(
+        (s) => s.state === MealSelectionState.PRESENT,
+      ).length,
+      pendingSelections,
+    };
   }
 
   /**
