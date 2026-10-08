@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { AuthModule } from './auth/auth.module';
 import { CustomersModule } from './customers/customers.module';
 import { PlansModule } from './plans/plans.module';
@@ -9,6 +10,7 @@ import { SelectionsModule } from './selections/selections.module';
 import { LedgerModule } from './ledger/ledger.module';
 import { BillingModule } from './billing/billing.module';
 import { AdminModule } from './admin/admin.module';
+import { SchedulerModule } from './scheduler/scheduler.module';
 import { Customer } from './entities/customer.entity';
 import { Subscription } from './entities/subscription.entity';
 import { Plan } from './entities/plan.entity';
@@ -27,6 +29,7 @@ import { Staff } from './entities/staff.entity';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST || 'localhost',
@@ -58,6 +61,7 @@ import { Staff } from './entities/staff.entity';
     LedgerModule,
     BillingModule,
     AdminModule,
+    SchedulerModule,
   ],
 })
 export class AppModule {}
