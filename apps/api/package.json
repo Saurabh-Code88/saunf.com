@@ -23,6 +23,7 @@
     "@nestjs/bull": "^11.0.0",
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/passport": "^11.0.0",
+    "@nestjs/schedule": "^4.0.0",
     "typeorm": "^0.3.20",
     "pg": "^8.13.0",
     "bullmq": "^5.0.0",
